@@ -4,15 +4,16 @@ CFLAGS = -o
 
 LIBFLAGS = -lws2_32
 
-all: client server
-	@./server
-	@./main
+all: client server run
 
 client:
 	@$(CC) main.c $(CFLAGS) main $(LIBFLAGS)
 
 server:
-	@$(CC) server.c $(CFLAGS) main $(LIBFLAGS) 
+	@$(CC) server.c $(CFLAGS) server $(LIBFLAGS)
 
-spawn: client
-	$(info Another client thread has been spawned...)
+run: client server
+	@echo "Starting server and client..."
+	@./server &   # Run the server in the background
+	@sleep 1      # Optionally, wait for the server to initialize
+	@./main       # Run the client program
